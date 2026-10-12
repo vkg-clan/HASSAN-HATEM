@@ -238,7 +238,7 @@
             </div>
 
             <!-- أيقونات مواقع التواصل الاجتماعي -->
-            <div class="flex items-center justify-center gap-6 sm:gap-8 my-6">
+            <div class="flex items-center justify-center gap-6 sm:gap-8 my-6 flex-wrap">
                 <a href="https://www.youtube.com/@COBRA_E" target="_blank" class="float-anim social-icon hover-3d w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-black/60 border border-white/15 text-2xl sm:text-3xl shadow-lg" style="animation-delay: 0s">
                     <i class="fa-brands fa-youtube"></i>
                 </a>
@@ -248,22 +248,12 @@
                 <a href="https://www.tiktok.com/@qbhso?_r=1&_t=ZS-99s6eRCH8s8" target="_blank" class="float-anim social-icon hover-3d w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-black/60 border border-white/15 text-2xl sm:text-3xl shadow-lg" style="animation-delay: 1s">
                     <i class="fa-brands fa-tiktok"></i>
                 </a>
-            </div>
-
-            <!-- Discord Widget -->
-            <div class="mt-8 w-full max-w-md glass-panel rounded-xl p-4 flex items-center gap-4 border-theme-gold/30 text-right hover:border-theme-gold/60 hover:shadow-[0_0_25px_rgba(255,215,0,0.2)] transition-all duration-300 cursor-pointer mx-auto hover-3d">
-                <div class="relative shrink-0">
-                    <img id="discord-avatar" src="https://placehold.co/60x60/111/fff?text=?" alt="Discord Avatar" class="w-14 h-14 rounded-full border border-theme-gold/50 bg-gray-900 object-cover">
-                    <div id="discord-status" class="absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-[#0a0a0a] bg-gray-600"></div>
-                </div>
-                
-                <div class="flex-grow flex flex-col justify-center">
-                    <div class="flex items-center justify-between">
-                        <h3 id="discord-username" class="font-bold text-gray-100 text-base">جاري التحميل...</h3>
-                        <i class="fa-brands fa-discord text-theme-gold text-lg"></i>
-                    </div>
-                    <p id="discord-activity" class="text-sm text-theme-greenLight mt-1 line-clamp-1">يبحث عن البيانات...</p>
-                </div>
+                <a href="https://kick.com/qbhso1" target="_blank" class="float-anim social-icon hover-3d w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-black/60 border border-white/15 text-2xl sm:text-3xl shadow-lg px-2" style="animation-delay: 1.5s" title="Kick">
+                    <svg class="w-8 h-8 sm:w-10 sm:h-10 fill-current" viewBox="0 0 24 24"><path d="M1.333 0h8v8.533h2.667V5.867H16V3.2h6.667v5.333H20v2.667h-2.667v2.667H20v2.667h2.667V21.9H16v-2.667h-4V16.533H9.333V24h-8V0zm5.334 5.333h-2.667v13.334h2.667V5.333z"/></svg>
+                </a>
+                <a href="javascript:void(0);" onclick="alert('Discord Username: qbhso1');" class="float-anim social-icon hover-3d w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-black/60 border border-white/15 text-2xl sm:text-3xl shadow-lg cursor-pointer" style="animation-delay: 2s" title="Discord">
+                    <i class="fa-brands fa-discord"></i>
+                </a>
             </div>
 
             <!-- صف الإحصائيات -->
@@ -617,48 +607,6 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
         draw3DGrid();
-
-        // Discord Status (Lanyard API)
-        const DISCORD_USER_ID = '974595300255756328'; 
-        
-        async function fetchDiscordStatus() {
-            try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-                const data = await response.json();
-
-                if (data.success) {
-                    const user = data.data.discord_user;
-                    const discordStatus = data.data.discord_status;
-                    const activities = data.data.activities;
-
-                    const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-                    document.getElementById('discord-avatar').src = avatarUrl;
-                    document.getElementById('discord-username').textContent = user.global_name || user.username;
-
-                    const statusStatusDot = document.getElementById('discord-status');
-                    statusStatusDot.className = 'absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-[#0a0a0a]';
-                    if (discordStatus === 'online') statusStatusDot.classList.add('bg-[#23a559]');
-                    else if (discordStatus === 'idle') statusStatusDot.classList.add('bg-[#f0b232]');
-                    else if (discordStatus === 'dnd') statusStatusDot.classList.add('bg-[#f23f43]');
-                    else statusStatusDot.classList.add('bg-[#80848e]');
-
-                    let activityText = 'لا يوجد نشاط حالي';
-                    if (activities && activities.length > 0) {
-                        const customStatus = activities.find(a => a.type === 4);
-                        const gameStatus = activities.find(a => a.type === 0);
-                        if (customStatus && customStatus.state) activityText = customStatus.state;
-                        else if (gameStatus) activityText = `يلعب ${gameStatus.name}`;
-                    } else if (discordStatus !== 'offline') activityText = 'متصل';
-                    
-                    document.getElementById('discord-activity').textContent = activityText;
-                }
-            } catch (error) {
-                console.error("Lanyard Error:", error);
-            }
-        }
-
-        fetchDiscordStatus();
-        setInterval(fetchDiscordStatus, 30000);
 
         // --- تأثير الـ 3D التفاعلي للأزرار والعناصر القابلة للضغط تبعا لحركة الماوس ---
         const hoverElements = document.querySelectorAll('.hover-3d');
